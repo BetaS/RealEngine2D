@@ -18,6 +18,8 @@ public abstract class Drawable {
 	
 	public static abstract class Builder {
 		protected String 	mID 		= "";
+
+		protected boolean	mShow		= true;
 		
 		protected int 		mX 			= 0;
 		protected int 		mY 			= 0;
@@ -64,7 +66,10 @@ public abstract class Drawable {
 			mXferMode = mode;
 			return this;
 		}
-		
+		public Builder setHide() {
+			mShow = false;
+			return this;
+		}
 		public abstract Drawable build(String id);
 	}
 	
@@ -76,6 +81,8 @@ public abstract class Drawable {
 		mPaint = new Paint();
 		mPaint.setAntiAlias(true);
 		mPaint.setDither(true);
+		
+		mShow = srcBuilder.mShow;
 
 		setPriority(srcBuilder.mPriority);
 		
@@ -111,7 +118,7 @@ public abstract class Drawable {
 	/*
 	 * Drawable Show
 	 */
-	protected boolean mShow = false;
+	protected boolean mShow = true;
 	public void show() {
 		mShow = true;
 	}
@@ -271,8 +278,8 @@ public abstract class Drawable {
 			update();
 
 			canvas.save();
-
-			canvas.setMatrix(mMatrix);
+			
+			canvas.concat(mMatrix);
 			render(canvas);
 			
 			canvas.restore();

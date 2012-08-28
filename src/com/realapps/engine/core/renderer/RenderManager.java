@@ -5,11 +5,15 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
+import android.view.WindowManager;
 
 import com.realapps.engine.Game;
 import com.realapps.engine.core.drawable.Drawable;
@@ -57,8 +61,32 @@ public class RenderManager extends SurfaceView implements Callback, Runnable {
 	private int 	mFrameRate 		= 0;		// 현재 프레임
 	private long 	mLastCheckTime 	= 0;		// 마지막 프레임 갱신 시간
 	
+	private int 	mBaseWidth		= 0;
+	private int		mBaseHeight		= 0;
+	private int		mScreenWidth	= 0;
+	private int 	mScreenHeight	= 0;
+	
+	private float	mWidthRatio		= 0.0f;
+	private float	mHeightRatio	= 0.0f;
+	
 	public void end() {
 		mThread.interrupt();
+	}
+	
+	public void setResolution(int width, int height) {
+		mBaseWidth = width;
+		mBaseHeight = height;
+		
+		DisplayMetrics displayMetrics = new DisplayMetrics();
+		WindowManager window = (WindowManager)Game.getContext().getSystemService(Context.WINDOW_SERVICE);
+		window.getDefaultDisplay().getMetrics(displayMetrics);
+		mScreenWidth = displayMetrics.widthPixels;
+		mScreenHeight = displayMetrics.heightPixels;
+		
+		mWidthRatio = (float)mScreenWidth/mBaseWidth;
+		mHeightRatio = (float)mScreenHeight/mBaseHeight;
+		
+		Log.e("Screen Ratio", "X: "+mWidthRatio+", Y: "+mHeightRatio);
 	}
 	
 	public void showFPS() {
@@ -90,7 +118,6 @@ public class RenderManager extends SurfaceView implements Callback, Runnable {
 
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-		
 	}
 	
 	@Override
@@ -158,6 +185,8 @@ public class RenderManager extends SurfaceView implements Callback, Runnable {
 			canvas = getHolder().lockCanvas(null); // 켄바스를 잠구어 안의 내용을 바꿀수 있도록 동기화합니다.
 		} finally { // 모든 작업을 끝마친다음에는
 			if (canvas != null){
+				canvas.scale(mWidthRatio, mHeightRatio);
+				
 				GameScene scene = SceneManager.getCurrentScene();
 				
 				canvas.drawColor(scene.getBackgroundColor());
@@ -167,7 +196,7 @@ public class RenderManager extends SurfaceView implements Callback, Runnable {
 				}
 				scene.onPostRender();
 				if(mShowFPS) canvas.drawText(mFPSText, 0, mFPSPaint.getTextSize(), mFPSPaint);
-				
+
 				getHolder().unlockCanvasAndPost(canvas); // 켄바스의 잠금을 푼다음에 화면에 개시합니다.
 			}
 		}
