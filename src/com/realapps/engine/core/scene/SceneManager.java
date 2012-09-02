@@ -2,6 +2,8 @@ package com.realapps.engine.core.scene;
 
 import java.util.LinkedList;
 
+import com.realapps.engine.core.renderer.RenderManager;
+
 public class SceneManager {
 	private SceneManager() {
 	}	
@@ -21,6 +23,7 @@ public class SceneManager {
 		mSceneStack.addFirst(scene);
 		
 		scene.onInit();
+		RenderManager.getManager().setDrawableManager(scene.getDrawableManager());
 		scene.onStart();
 	}
 	public void replaceScene(GameScene scene) {
@@ -34,6 +37,7 @@ public class SceneManager {
 		}
 		
 		scene.onInit();
+		RenderManager.getManager().setDrawableManager(scene.getDrawableManager());
 		scene.onStart();
 	}
 	public void finishScene() {
@@ -42,6 +46,7 @@ public class SceneManager {
 		scene.onDestroy();
 		
 		scene = mSceneStack.getFirst();
+		RenderManager.getManager().setDrawableManager(scene.getDrawableManager());
 		scene.onStart();
 	}
 	

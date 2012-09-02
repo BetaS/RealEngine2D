@@ -2,16 +2,21 @@ package com.realapps.engine.core.scene;
 
 import java.util.ArrayList;
 
+import com.realapps.engine.core.drawable.DrawableManager;
+import com.realapps.engine.core.scene.ui.UIManager;
+
 import android.graphics.Color;
 import android.view.MotionEvent;
 
 public abstract class GameScene {
+	private DrawableManager mDrawableManager 	= new DrawableManager(this);
+	private UIManager		mUIManager			= new UIManager(this);
+	
 	public abstract void onInit();
 	public abstract void onDestroy();
 	
 	public void onStart() {}
-	public void onStop() {
-	}
+	public void onStop() {}
 	
 	public abstract void onPreRender();
 	public void onPostRender() {
@@ -38,6 +43,13 @@ public abstract class GameScene {
 	public abstract void onTimer(int timer_idx);
 	
 	public void onAnimationFinish(String drawableID, int animID) {}
+	
+	public DrawableManager getDrawableManager() {
+		return mDrawableManager;
+	}
+	public UIManager getUiManager() {
+		return mUIManager;
+	}
 	
 	private static class Timer {
 		public int mIdx;

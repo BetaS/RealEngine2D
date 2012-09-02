@@ -1,4 +1,4 @@
-package com.realapps.engine.core.drawable.ui;
+package com.realapps.engine.core.scene.ui;
 
 import android.view.MotionEvent;
 
@@ -9,10 +9,10 @@ public class UIButton extends UIView {
 	public static final int BUTTON_UP 	= 1;
 	
 	public UIButton(String btn_name, int drawable_off, int drawable_on) {
-		this(new ImageDrawable.ImageBuilder().setSource(drawable_off).build("btn_"+btn_name+"_up"), new ImageDrawable.ImageBuilder().setSource(drawable_on).build("btn_"+btn_name+"_down"));
+		this(btn_name, new ImageDrawable.ImageBuilder().setSource(drawable_off).build("btn_"+btn_name+"_up"), new ImageDrawable.ImageBuilder().setSource(drawable_on).build("btn_"+btn_name+"_down"));
 	}
-	public UIButton(ImageDrawable off, ImageDrawable on) {
-		super(off.getWidth(), off.getHeight());
+	public UIButton(String btn_name, ImageDrawable off, ImageDrawable on) {
+		super(btn_name, off.getWidth(), off.getHeight());
 		
 		mImages = new ImageDrawable[2];
 		

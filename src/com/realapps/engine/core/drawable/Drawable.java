@@ -9,7 +9,6 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.PorterDuffXfermode;
 
 import com.realapps.engine.core.animation.Animator;
-import com.realapps.engine.core.renderer.RenderManager;
 import com.realapps.engine.core.scene.SceneManager;
 
 public abstract class Drawable {
@@ -99,11 +98,11 @@ public abstract class Drawable {
 		setColorFilter(srcBuilder.mColorFilter);
 		setXferMode(srcBuilder.mXferMode);
 		
-		RenderManager.getManager().putDrawable(mID, this);
+		SceneManager.getCurrentScene().getDrawableManager().putDrawable(mID, this);
 	}
 
 	public void delete() {
-		RenderManager.removeDrawable(mID);
+		SceneManager.getCurrentScene().getDrawableManager().removeDrawable(mID);
 	}
 	
 	public String getID() {
@@ -158,10 +157,10 @@ public abstract class Drawable {
 	/*
 	 * Drawable Priority
 	 */
-	protected short mPriority = 0;
+	protected int mPriority = 0;
 	public void setPriority(int priority) {
-		mPriority = (short)priority;
-		RenderManager.getManager().sync();
+		mPriority = priority;
+		DrawableManager.sync();
 	}
 	public int getPriority() {
 		return mPriority;

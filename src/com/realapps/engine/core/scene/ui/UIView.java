@@ -1,18 +1,23 @@
-package com.realapps.engine.core.drawable.ui;
+package com.realapps.engine.core.scene.ui;
 
 import android.util.Log;
 import android.view.MotionEvent;
 
 import com.realapps.engine.core.drawable.ImageDrawable;
-import com.realapps.engine.core.renderer.RenderManager;
 
 public abstract class UIView {
+	protected String mID = "";
 	protected ImageDrawable[] mImages = null;
 	
 	protected abstract void touched(int action);
 	
-	public UIView(int width, int height) {
+	public UIView(String id, int width, int height) {
+		mID = id;
 		setSize(width, height);
+	}
+	
+	public String getId() {
+		return mID;
 	}
 	
 	public void touch(MotionEvent event) {
@@ -91,7 +96,6 @@ public abstract class UIView {
 		for(ImageDrawable image: mImages) {
 			image.setPriority(priority);
 		}
-		RenderManager.getManager().sync();
 	}
 	public int getPriority() {
 		return mPriority;

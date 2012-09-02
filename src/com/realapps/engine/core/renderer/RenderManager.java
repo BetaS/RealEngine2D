@@ -1,9 +1,6 @@
 package com.realapps.engine.core.renderer;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.List;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -17,6 +14,7 @@ import android.view.WindowManager;
 
 import com.realapps.engine.Game;
 import com.realapps.engine.core.drawable.Drawable;
+import com.realapps.engine.core.drawable.DrawableManager;
 import com.realapps.engine.core.scene.GameScene;
 import com.realapps.engine.core.scene.SceneManager;
 
@@ -32,21 +30,15 @@ public class RenderManager extends SurfaceView implements Callback, Runnable {
 		return mInstance;
 	}
 	
-	public static Drawable getDrawable(String id) {
-		return mInstance.mDrawableMap.get(id);
-	}
-	public static void removeDrawable(String id) {
-		mInstance.mDrawableMap.remove(id);
-	}
-	public static void clearDrawable() {
-		mInstance.mDrawableMap.clear();
-		mInstance.sync();
-	}
-	
 	/*
 	 * Render Thread
 	 */
 	private Thread 	mThread			= null;
+	
+	/*
+	 * Drawable Manager
+	 */
+	private DrawableManager mDrawableManager = null;
 	
 	/*
 	 *  Frame Per Sec.
@@ -124,32 +116,9 @@ public class RenderManager extends SurfaceView implements Callback, Runnable {
 	public void surfaceDestroyed(SurfaceHolder holder) {
 		mThread.interrupt();
 	}
-
-	private HashMap<String, Drawable> mDrawableMap = new HashMap<String, Drawable>();
-	public void putDrawable(String key, Drawable drawable) {
-		mDrawableMap.put(key, drawable);
-		sync();
-	}
 	
-	private boolean isSync = false;
-	public synchronized void sync() {
-		isSync = true;
-	}
-	
-	private LinkedList<Drawable> mRenderingQueue = new LinkedList<Drawable>();
-	private synchronized void synchronize() {
-		mRenderingQueue = new LinkedList<Drawable>();
-		for(String key: mDrawableMap.keySet()) {
-			mRenderingQueue.add(mDrawableMap.get(key));
-		}
-
-		Collections.sort(mRenderingQueue, new Comparator<Drawable>() {
-			@Override
-			public int compare(Drawable lhs, Drawable rhs) {
-				return lhs.getPriority()-rhs.getPriority();
-			}
-		});
-		isSync = false;
+	public void setDrawableManager(DrawableManager manager) {
+		mDrawableManager = manager;
 	}
 
 	@Override
@@ -177,8 +146,6 @@ public class RenderManager extends SurfaceView implements Callback, Runnable {
 	}
 	
 	public synchronized void render() {
-		if(isSync) synchronize();
-		
 		Canvas canvas = null;
 	
 		try {
@@ -187,11 +154,13 @@ public class RenderManager extends SurfaceView implements Callback, Runnable {
 			if (canvas != null){
 				canvas.scale(mWidthRatio, mHeightRatio);
 				
+				List<Drawable> renderingQueue = mDrawableManager.refresh();
+						
 				GameScene scene = SceneManager.getCurrentScene();
 				
 				canvas.drawColor(scene.getBackgroundColor());
 				scene.onPreRender();
-				for(Drawable drawable: mRenderingQueue) {
+				for(Drawable drawable: renderingQueue) {
 					drawable.draw(canvas);
 				}
 				scene.onPostRender();
