@@ -10,9 +10,6 @@ public class ImageDrawable extends Drawable {
 	public static class ImageBuilder extends Builder {
 		protected Bitmap mBitmap 		= null;
 		
-		private int mAnimationSliceX 	= 1;
-		private int mAnimationSliceY 	= 1;
-		
 		private float mScale = 1.0f;
 		
 		public ImageBuilder setSource(Bitmap bitmap) {
@@ -31,11 +28,6 @@ public class ImageDrawable extends Drawable {
 			mScale = scale;
 			return this;
 		}
-		public ImageBuilder setSpriteSlice(int x, int y) {
-			mAnimationSliceX = x;
-			mAnimationSliceY = y;
-			return this;
-		}
 		
 		public ImageDrawable build(String id) {
 			mID = id;
@@ -43,16 +35,9 @@ public class ImageDrawable extends Drawable {
 		}
 	}
 	
-	private Bitmap mBitmap = null;
+	protected Bitmap mBitmap = null;
 	
-	private boolean mAnimationPlay = false;
-	
-	private int mAnimationSliceX = 0;
-	private int mAnimationSliceY = 0;
-	
-	private int mAnimationIndex = 0;
-	
-	private ImageDrawable(ImageBuilder srcBuilder) {
+	protected ImageDrawable(ImageBuilder srcBuilder) {
 		super(srcBuilder);
 		
 		if(srcBuilder.mScale == 1)
@@ -60,30 +45,20 @@ public class ImageDrawable extends Drawable {
 		else 
 			mBitmap = Bitmap.createScaledBitmap(srcBuilder.mBitmap, (int)(srcBuilder.mBitmap.getWidth()*srcBuilder.mScale), (int)(srcBuilder.mBitmap.getHeight()*srcBuilder.mScale), true);	
 		
-		mAnimationSliceX 	= srcBuilder.mAnimationSliceX;
-		mAnimationSliceY 	= srcBuilder.mAnimationSliceY;
-		
 		// Set Size
-		setSize((mBitmap.getWidth()/mAnimationSliceX), (mBitmap.getHeight()/mAnimationSliceY));
+		setSize(mBitmap.getWidth(), mBitmap.getHeight());
 	}
 	
-	protected void update() {
-		if(mAnimationPlay) {
-			if((++mAnimationIndex) >= (mAnimationSliceX*mAnimationSliceY)) {
-				mAnimationIndex = 0;
-			}
-		}
-	}
+	protected void update() { }
 	protected void render(Canvas canvas) {
 		if(mBitmap != null && !mBitmap.isRecycled()) {
-			int X = mAnimationIndex%mAnimationSliceX;
-			int Y = mAnimationIndex/mAnimationSliceX;
 		
-			canvas.drawBitmap(mBitmap, new Rect(X*getWidth(), Y*getHeight(), (X+1)*getWidth(), (Y+1)*getHeight()), new Rect(getX(), getY(), getX()+getWidth(), getY()+getHeight()), mPaint);
+			canvas.drawBitmap(mBitmap, new Rect(0, 0, getWidth(), getHeight()), new Rect(getX(), getY(), getX()+getWidth(), getY()+getHeight()), mPaint);
 		}
 	}
 	
-	public void delete() {
+	@Override
+	public void release() {
 		mBitmap.recycle();
 		mBitmap = null;
 	}

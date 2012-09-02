@@ -64,4 +64,9 @@ public class ShapeDrawable extends Drawable {
 			last_pt = pt;
 		}
 	}
+	
+	@Override
+	public void release() {
+		
+	}
 }

@@ -6,18 +6,19 @@ import com.realapps.engine.core.debug.exception.RuntimeException;
 import com.realapps.engine.core.scene.GameScene;
 
 public class UIManager {
+	@SuppressWarnings("unused")
 	private GameScene mScene = null;
-	private HashMap<String, UIView> view_list = new HashMap<String, UIView>();
+	private HashMap<String, UIView> uiList = new HashMap<String, UIView>();
 	
 	public UIManager(GameScene scene) {
 		mScene = scene;
 	}
 	
 	public void addUI(UIView view) {
-		if(view_list.containsKey(view.getId())) {
+		if(uiList.containsKey(view.getId())) {
 			throw new RuntimeException("["+view.getId()+"] is already existed!");
 		}
 		
-		view_list.put(view.getId(), view);
+		uiList.put(view.getId(), view);
 	}
 }

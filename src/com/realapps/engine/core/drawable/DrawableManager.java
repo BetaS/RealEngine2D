@@ -11,6 +11,7 @@ import com.realapps.engine.core.scene.GameScene;
 public class DrawableManager {
 	private static boolean sync = false;
 	
+	@SuppressWarnings("unused")
 	private GameScene mScene = null;
 	public DrawableManager(GameScene scene) {
 		mScene = scene;
@@ -39,18 +40,24 @@ public class DrawableManager {
 	}
 
 	private HashMap<String, Drawable> mDrawableMap = new HashMap<String, Drawable>();
-	public void putDrawable(String key, Drawable drawable) {
+	public void add(String key, Drawable drawable) {
 		mDrawableMap.put(key, drawable);
 		sync();
 	}
-	public Drawable getDrawable(String id) {
+	public Drawable get(String id) {
 		return mDrawableMap.get(id);
 	}
-	public void removeDrawable(String id) {
+	public void remove(String id) {
+		Drawable drawable = get(id);
+		drawable.release();
+		
 		mDrawableMap.remove(id);
 		sync();
 	}
-	public void clearDrawable() {
+	public void clear() {
+		for(String key: mDrawableMap.keySet()) {
+			mDrawableMap.get(key).release();
+		}
 		mDrawableMap.clear();
 		sync();
 	}

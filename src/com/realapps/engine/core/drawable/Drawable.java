@@ -98,12 +98,10 @@ public abstract class Drawable {
 		setColorFilter(srcBuilder.mColorFilter);
 		setXferMode(srcBuilder.mXferMode);
 		
-		SceneManager.getCurrentScene().getDrawableManager().putDrawable(mID, this);
+		SceneManager.getCurrentScene().getDrawableManager().add(mID, this);
 	}
 
-	public void delete() {
-		SceneManager.getCurrentScene().getDrawableManager().removeDrawable(mID);
-	}
+	public abstract void release();
 	
 	public String getID() {
 		return mID;

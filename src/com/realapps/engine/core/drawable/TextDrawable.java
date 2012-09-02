@@ -51,8 +51,7 @@ public class TextDrawable extends Drawable {
 	}
 
 	@Override
-	public void delete() {
+	public void release() {
 		mPaint = null;
 	}
-
 }
