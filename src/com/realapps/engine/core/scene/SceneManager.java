@@ -12,6 +12,9 @@ public class SceneManager {
 	public static SceneManager getManager() {
 		return mInstance;
 	}
+	public static GameScene getCurrentScene() {
+		return mInstance.mSceneStack.getFirst();
+	}
 	
 	private LinkedList<GameScene> mSceneStack = new LinkedList<GameScene>();
 	public void startScene(GameScene scene) {
@@ -35,9 +38,9 @@ public class SceneManager {
 			currScene.onDestroy();
 			mSceneStack.remove(currScene);
 		}
-		
-		scene.onInit();
+
 		RenderManager.getManager().setDrawableManager(scene.getDrawableManager());
+		scene.onInit();
 		scene.onStart();
 	}
 	public void finishScene() {
@@ -48,9 +51,5 @@ public class SceneManager {
 		scene = mSceneStack.getFirst();
 		RenderManager.getManager().setDrawableManager(scene.getDrawableManager());
 		scene.onStart();
-	}
-	
-	public static GameScene getCurrentScene() {
-		return mInstance.mSceneStack.getFirst();
 	}
 }

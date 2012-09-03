@@ -52,14 +52,12 @@ public class ImageDrawable extends Drawable {
 	protected void update() { }
 	protected void render(Canvas canvas) {
 		if(mBitmap != null && !mBitmap.isRecycled()) {
-		
 			canvas.drawBitmap(mBitmap, new Rect(0, 0, getWidth(), getHeight()), new Rect(getX(), getY(), getX()+getWidth(), getY()+getHeight()), mPaint);
 		}
 	}
 	
 	@Override
 	public void release() {
-		mBitmap.recycle();
 		mBitmap = null;
 	}
 }
