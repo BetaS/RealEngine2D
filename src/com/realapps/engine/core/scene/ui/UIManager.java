@@ -8,17 +8,33 @@ import com.realapps.engine.core.scene.GameScene;
 public class UIManager {
 	@SuppressWarnings("unused")
 	private GameScene mScene = null;
-	private HashMap<String, UIView> uiList = new HashMap<String, UIView>();
+	private HashMap<String, UIView> mUIMap = new HashMap<String, UIView>();
 	
 	public UIManager(GameScene scene) {
 		mScene = scene;
 	}
 	
-	public void addUI(UIView view) {
-		if(uiList.containsKey(view.getId())) {
+	public void add(UIView view) {
+		if(mUIMap.containsKey(view.getId())) {
 			throw new RuntimeException("["+view.getId()+"] is already existed!");
 		}
 		
-		uiList.put(view.getId(), view);
+		mUIMap.put(view.getId(), view);
+	}
+	
+	public UIView get(String id) {
+		return mUIMap.get(id);
+	}
+	public void remove(String id) {
+		UIView view = get(id);
+		view.release();
+		
+		mUIMap.remove(id);
+	}
+	public void clear() {
+		for(String key: mUIMap.keySet()) {
+			mUIMap.get(key).release();
+		}
+		mUIMap.clear();
 	}
 }

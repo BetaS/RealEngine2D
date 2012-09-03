@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.realapps.engine.core.debug.exception.RuntimeException;
 import com.realapps.engine.core.scene.GameScene;
 
 public class DrawableManager {
@@ -40,8 +41,12 @@ public class DrawableManager {
 	}
 
 	private HashMap<String, Drawable> mDrawableMap = new HashMap<String, Drawable>();
-	public void add(String key, Drawable drawable) {
-		mDrawableMap.put(key, drawable);
+	public void add(Drawable drawable) {
+		if(mDrawableMap.containsKey(drawable.getId())) {
+			throw new RuntimeException("["+drawable.getId()+"] is already existed!");
+		}
+		
+		mDrawableMap.put(drawable.getId(), drawable);
 		sync();
 	}
 	public Drawable get(String id) {

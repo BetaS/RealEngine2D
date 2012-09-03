@@ -98,12 +98,12 @@ public abstract class Drawable {
 		setColorFilter(srcBuilder.mColorFilter);
 		setXferMode(srcBuilder.mXferMode);
 		
-		SceneManager.getCurrentScene().getDrawableManager().add(mID, this);
+		SceneManager.getCurrentScene().getDrawableManager().add(this);
 	}
 
 	public abstract void release();
 	
-	public String getID() {
+	public String getId() {
 		return mID;
 	}
 
@@ -220,7 +220,7 @@ public abstract class Drawable {
 	 */
 	public void onAnimationFinish(int animID) {
 		mAnimate = null;
-		SceneManager.getCurrentScene().onAnimationFinish(this.getID(), animID);
+		SceneManager.getCurrentScene().onAnimationFinish(this.getId(), animID);
 	}
 	
 	/*

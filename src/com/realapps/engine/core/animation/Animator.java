@@ -42,7 +42,7 @@ public abstract class Animator {
 	
 	protected void endAnimation(Drawable drawable) {
 		if(mAnimationID >= 0)
-			Debug.log("Animation",  drawable.getID()+"/"+mAnimationID+" End");
+			Debug.log("Animation",  drawable.getId()+"/"+mAnimationID+" End");
 		
 		mEnd = true;
 		drawable.onAnimationFinish(mAnimationID);
