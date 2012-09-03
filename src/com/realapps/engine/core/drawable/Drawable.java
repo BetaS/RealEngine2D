@@ -132,8 +132,8 @@ public abstract class Drawable {
 	private Matrix mMatrix = new Matrix();
 	private void updateMatrix() {
 		mMatrix = new Matrix();
-		mMatrix.postRotate(mRotate, getWidth()/2, getHeight()/2);
 		mMatrix.postTranslate(mOffsetX, mOffsetY);
+		mMatrix.postRotate(mRotate);
 	}
 	
 	/*

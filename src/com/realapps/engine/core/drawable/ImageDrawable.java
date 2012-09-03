@@ -41,7 +41,7 @@ public class ImageDrawable extends Drawable {
 		super(srcBuilder);
 		
 		if(srcBuilder.mScale == 1)
-			mBitmap 			= srcBuilder.mBitmap;
+			mBitmap = srcBuilder.mBitmap;
 		else 
 			mBitmap = Bitmap.createScaledBitmap(srcBuilder.mBitmap, (int)(srcBuilder.mBitmap.getWidth()*srcBuilder.mScale), (int)(srcBuilder.mBitmap.getHeight()*srcBuilder.mScale), true);	
 		
