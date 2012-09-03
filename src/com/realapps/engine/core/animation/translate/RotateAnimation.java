@@ -5,13 +5,15 @@ import com.realapps.engine.core.drawable.Drawable;
 
 
 public class RotateAnimation extends Animator {
+	private float mDistDegree = 0.0f;
 	private float mSpeed = 0.0f;
 	
-	public RotateAnimation(int animationID, float speed, int duration) {
+	public RotateAnimation(int animationID, float distDegree, int duration) {
 		super(animationID);
 		setDuration(duration);
 		
-		mSpeed = speed;
+		mDistDegree = distDegree;
+		mSpeed = mDistDegree/duration;
 	}
 	
 	@Override
@@ -23,6 +25,7 @@ public class RotateAnimation extends Animator {
 		
 		drawable.setRotate(degree+mSpeed);
 		if(mDuration <= 0) {
+			drawable.setRotate(mDistDegree%360);
 			endAnimation(drawable);
 		}
 	}
