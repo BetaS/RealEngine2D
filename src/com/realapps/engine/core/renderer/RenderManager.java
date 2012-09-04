@@ -160,6 +160,7 @@ public class RenderManager extends SurfaceView implements Callback, Runnable {
 				
 				canvas.drawColor(scene.getBackgroundColor());
 				scene.onPreRender();
+				scene.getPhysicsManager().checkPhysics();
 				for(Drawable drawable: renderingQueue) {
 					drawable.draw(canvas);
 				}

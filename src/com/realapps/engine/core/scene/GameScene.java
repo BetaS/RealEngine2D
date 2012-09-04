@@ -12,8 +12,10 @@ import com.realapps.engine.core.drawable.ImageDrawable;
 import com.realapps.engine.core.drawable.SpriteDrawable;
 import com.realapps.engine.core.drawable.TextDrawable;
 import com.realapps.engine.core.scene.ui.UIManager;
+import com.realapps.engine.core.util.physics.PhysicsManager;
 
 public abstract class GameScene {
+	private PhysicsManager	mPhysicsManager		= new PhysicsManager();
 	private DrawableManager mDrawableManager 	= new DrawableManager(this);
 	private UIManager		mUIManager			= new UIManager(this);
 	
@@ -99,6 +101,9 @@ public abstract class GameScene {
 	/*
 	 * Manager
 	 */
+	public PhysicsManager getPhysicsManager() {
+		return mPhysicsManager;
+	}
 	public DrawableManager getDrawableManager() {
 		return mDrawableManager;
 	}
