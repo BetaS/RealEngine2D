@@ -1,7 +1,6 @@
 package com.realapps.engine;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.MotionEvent;
 
@@ -10,8 +9,8 @@ import com.realapps.engine.core.scene.GameScene;
 import com.realapps.engine.core.scene.SceneManager;
 
 public class Game extends Activity {
-	private static Context mApplicationContext = null;
-	public static Context getContext() {
+	private static Activity mApplicationContext = null;
+	public static Activity getContext() {
 		return mApplicationContext;
 	}
 	
@@ -36,7 +35,7 @@ public class Game extends Activity {
 	protected void onCreate(Bundle savedInstanceState, GameScene scene, int width, int height, int fps, boolean debug) {
 		super.onCreate(savedInstanceState);
 
-		mApplicationContext = (Context)this;
+		mApplicationContext = this;
 		
 		RenderManager renderer = RenderManager.getManager();
 		if(debug) renderer.showFPS();
@@ -46,7 +45,7 @@ public class Game extends Activity {
 		
 		renderer.setFPS(fps);
 	
-		SceneManager.getManager().startScene(scene);
+		SceneManager.getManager().startScene(scene, true, true);
 		
 		setContentView(renderer);
 	}
@@ -55,18 +54,25 @@ public class Game extends Activity {
 	protected void onResume() {
 		super.onResume();
 	
-		mApplicationContext = (Context)this;
+		mApplicationContext = this;
+		SceneManager.getManager().resume();
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		
+		SceneManager.getManager().stop();
 	}
 	
 	@Override
 	public void onBackPressed() {
-		super.onBackPressed();
-		RenderManager.getManager().end();
+		SceneManager.getManager().onBackPressed();
 	}
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		SceneManager.getCurrentScene().onTouchScreen(event);
+		SceneManager.getManager().onTouchScreen(event);
 		return super.onTouchEvent(event);
 	}
 	

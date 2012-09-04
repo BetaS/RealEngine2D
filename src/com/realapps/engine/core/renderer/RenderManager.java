@@ -61,6 +61,19 @@ public class RenderManager extends SurfaceView implements Callback, Runnable {
 	private float	mWidthRatio		= 0.0f;
 	private float	mHeightRatio	= 0.0f;
 	
+	private boolean mStop = false;
+	
+	
+	public void start() {
+		mStop = false;
+	}
+	public void stop() {
+		mStop = true;
+	}
+	public boolean isStop() {
+		return mStop;
+	}
+	
 	public void end() {
 		mThread.interrupt();
 	}
@@ -120,7 +133,7 @@ public class RenderManager extends SurfaceView implements Callback, Runnable {
 	public void setDrawableManager(DrawableManager manager) {
 		mDrawableManager = manager;
 	}
-
+	
 	@Override
 	public void run() {
 		while(!Thread.interrupted()) { // 쓰레드의 무한반복을위해서 while을 돌려줍니다.
@@ -159,12 +172,18 @@ public class RenderManager extends SurfaceView implements Callback, Runnable {
 				GameScene scene = SceneManager.getCurrentScene();
 				
 				canvas.drawColor(scene.getBackgroundColor());
-				scene.onPreRender();
-				scene.getPhysicsManager().checkPhysics();
+				if(!mStop) {
+					scene.onPreRender();
+					scene.onUpdateTimer();
+					scene.getPhysicsManager().checkPhysics();
+				}
+				
 				for(Drawable drawable: renderingQueue) {
 					drawable.draw(canvas);
 				}
-				scene.onPostRender();
+				
+				scene.onPostRender(canvas);
+			
 				if(mShowFPS) canvas.drawText(mFPSText, 0, mFPSPaint.getTextSize(), mFPSPaint);
 
 				getHolder().unlockCanvasAndPost(canvas); // 켄바스의 잠금을 푼다음에 화면에 개시합니다.

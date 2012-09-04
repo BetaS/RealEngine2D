@@ -3,6 +3,7 @@ package com.realapps.engine.core.scene;
 import java.util.ArrayList;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.view.MotionEvent;
 
@@ -11,6 +12,7 @@ import com.realapps.engine.core.drawable.DrawableManager;
 import com.realapps.engine.core.drawable.ImageDrawable;
 import com.realapps.engine.core.drawable.SpriteDrawable;
 import com.realapps.engine.core.drawable.TextDrawable;
+import com.realapps.engine.core.scene.SceneManager.SceneChanger;
 import com.realapps.engine.core.scene.ui.UIManager;
 import com.realapps.engine.core.util.physics.PhysicsManager;
 
@@ -19,16 +21,27 @@ public abstract class GameScene {
 	private DrawableManager mDrawableManager 	= new DrawableManager(this);
 	private UIManager		mUIManager			= new UIManager(this);
 	
-	public abstract void onInit();
+	private SceneChanger		mSceneChanger 	= null;
+	
+	public abstract void onInit(); // 엑티비티 세팅
 	public void onDestroy() {
 		mDrawableManager.clear();
 	}
 	
-	public void onStart() {}
-	public void onStop() {}
+	public void onStart() {} // 엑티비티 세팅이 끝난이후
 	
-	public abstract void onPreRender();
-	public void onPostRender() {
+	public void onResume() {} // 장면이 다시 실행될때
+	public void onStop() {} // 장면이 잠시 중단될때
+	
+	public abstract void onPreRender(); // 연산처리등을 할때
+	public final void onPostRender(Canvas canvas) {
+		if(mSceneChanger != null) {
+			if(!mSceneChanger.render(canvas))
+				mSceneChanger = null;
+		}
+	}
+	
+	public final void onUpdateTimer() {
 		long now = System.currentTimeMillis();
 		
 		int size = mTimerList.size();
@@ -48,10 +61,34 @@ public abstract class GameScene {
 		}
 	}
 	
+	public void onBackPressed() {
+		finish(false);
+	}
 	public abstract void onTouchScreen(MotionEvent event);
 	public abstract void onTimer(int timer_idx);
 	
 	public void onAnimationFinish(String drawableID, int animID) {}
+	
+	public void startScene(GameScene scene) {
+		startScene(scene, true, true);
+	}
+	public void startScene(GameScene scene, boolean anim, boolean new_anim) {
+		SceneManager.getManager().startScene(scene, anim, new_anim);
+	}
+	
+	public void replaceScene(GameScene scene) {
+		replaceScene(scene, true, true);
+	}
+	public void replaceScene(GameScene scene, boolean anim, boolean new_anim) {
+		SceneManager.getManager().replaceScene(scene, anim, new_anim);
+	}
+	
+	public void finish(boolean anim) {
+		SceneManager.getManager().finishScene(anim);
+	}
+	public void setSceneChanger(SceneChanger changer) {
+		mSceneChanger = changer;
+	}
 	
 	/*
 	 * Background
