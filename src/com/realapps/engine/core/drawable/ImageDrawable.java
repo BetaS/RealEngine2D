@@ -36,6 +36,8 @@ public class ImageDrawable extends Drawable {
 	}
 	
 	protected Bitmap mBitmap = null;
+	protected Rect mRenderRect = null;
+	protected Rect mImageRect = null;
 	
 	protected ImageDrawable(ImageBuilder srcBuilder) {
 		super(srcBuilder);
@@ -49,10 +51,29 @@ public class ImageDrawable extends Drawable {
 		setSize(mBitmap.getWidth(), mBitmap.getHeight());
 	}
 	
+	public Rect getBounds() {
+		return mRenderRect;
+	}
+	
+	@Override
+	protected void setSize(int width, int height) {
+		super.setSize(width, height);
+	
+		mImageRect = new Rect(0, 0, getWidth(), getHeight());
+		mRenderRect = new Rect(getX(), getY(), getX()+getWidth(), getY()+getHeight());
+	}
+	
+	@Override
+	public void setPosition(int x, int y) {
+		super.setPosition(x, y);
+
+		mRenderRect = new Rect(getX(), getY(), getX()+getWidth(), getY()+getHeight());
+	}
+	
 	protected void update() { }
 	protected void render(Canvas canvas) {
 		if(mBitmap != null && !mBitmap.isRecycled()) {
-			canvas.drawBitmap(mBitmap, new Rect(0, 0, getWidth(), getHeight()), new Rect(getX(), getY(), getX()+getWidth(), getY()+getHeight()), mPaint);
+			canvas.drawBitmap(mBitmap, mImageRect, mRenderRect, mPaint);
 		}
 	}
 	
