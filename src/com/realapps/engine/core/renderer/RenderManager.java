@@ -78,7 +78,7 @@ public class RenderManager extends SurfaceView implements Callback, Runnable {
 		mThread.interrupt();
 	}
 	
-	public void setResolution(int width, int height) {
+	public void setResolution(int width, int height, boolean clipping) {
 		mBaseWidth = width;
 		mBaseHeight = height;
 		
@@ -90,6 +90,11 @@ public class RenderManager extends SurfaceView implements Callback, Runnable {
 		
 		mWidthRatio = (float)mScreenWidth/mBaseWidth;
 		mHeightRatio = (float)mScreenHeight/mBaseHeight;
+
+		if(clipping) {
+			mWidthRatio = Math.min(mWidthRatio, mHeightRatio);
+			mHeightRatio = mWidthRatio;
+		}
 		
 		Log.e("Screen Ratio", "X: "+mWidthRatio+", Y: "+mHeightRatio);
 	}
@@ -170,22 +175,23 @@ public class RenderManager extends SurfaceView implements Callback, Runnable {
 				List<Drawable> renderingQueue = mDrawableManager.refresh();
 						
 				GameScene scene = SceneManager.getCurrentScene();
+				if(scene != null) {
+					canvas.drawColor(scene.getBackgroundColor());
+					if(!mStop) {
+						scene.onPreRender();
+						scene.onUpdateTimer();
+						scene.getPhysicsManager().checkPhysics();
+					}
+					
+					for(Drawable drawable: renderingQueue) {
+						drawable.draw(canvas);
+					}
+					
+					scene.onPostRender(canvas);
 				
-				canvas.drawColor(scene.getBackgroundColor());
-				if(!mStop) {
-					scene.onPreRender();
-					scene.onUpdateTimer();
-					scene.getPhysicsManager().checkPhysics();
+					if(mShowFPS) canvas.drawText(mFPSText, 0, mFPSPaint.getTextSize(), mFPSPaint);
+	
 				}
-				
-				for(Drawable drawable: renderingQueue) {
-					drawable.draw(canvas);
-				}
-				
-				scene.onPostRender(canvas);
-			
-				if(mShowFPS) canvas.drawText(mFPSText, 0, mFPSPaint.getTextSize(), mFPSPaint);
-
 				getHolder().unlockCanvasAndPost(canvas); // 켄바스의 잠금을 푼다음에 화면에 개시합니다.
 			}
 		}

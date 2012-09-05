@@ -16,11 +16,11 @@ public class Game extends Activity {
 	
 	
 	protected void onCreate(Bundle savedInstanceState, GameScene scene, boolean debug) {
-		this.onCreate(savedInstanceState, scene, 480, 800, 30, debug);
+		this.onCreate(savedInstanceState, scene, 480, 800, true, 30, debug);
 	}
 	
 	protected void onCreate(Bundle savedInstanceState, GameScene scene, int fps, boolean debug) {
-		this.onCreate(savedInstanceState, scene, 480, 800, fps, debug);
+		this.onCreate(savedInstanceState, scene, 480, 800, true, fps, debug);
 	}
 	
 	/**
@@ -32,7 +32,7 @@ public class Game extends Activity {
 	 * @param fps 최대 FPS 설정 (0 = 무한)
 	 * @param debug 디버그 모드 설정(FPS / Logging)
 	 */
-	protected void onCreate(Bundle savedInstanceState, GameScene scene, int width, int height, int fps, boolean debug) {
+	protected void onCreate(Bundle savedInstanceState, GameScene scene, int width, int height, boolean clipping, int fps, boolean debug) {
 		super.onCreate(savedInstanceState);
 
 		mApplicationContext = this;
@@ -41,7 +41,7 @@ public class Game extends Activity {
 		if(debug) renderer.showFPS();
 		else renderer.hideFPS();
 		
-		renderer.setResolution(width, height);
+		renderer.setResolution(width, height, clipping);
 		
 		renderer.setFPS(fps);
 	

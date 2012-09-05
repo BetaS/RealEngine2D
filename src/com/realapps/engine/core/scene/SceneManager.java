@@ -49,7 +49,10 @@ public class SceneManager {
 		return mInstance;
 	}
 	public static GameScene getCurrentScene() {
-		return mInstance.mSceneStack.getFirst();
+		if(mInstance.mSceneStack.size() > 0) {
+			return mInstance.mSceneStack.getFirst();
+		}
+		return null;
 	}
 	
 	public void onTouchScreen(MotionEvent event) {
@@ -66,11 +69,13 @@ public class SceneManager {
 	
 	public void resume() {
 		RenderManager.getManager().start();
-		getCurrentScene().onResume();
+		if(getCurrentScene() != null)
+			getCurrentScene().onResume();
 	}
 	public void stop() {
 		RenderManager.getManager().stop();
-		getCurrentScene().onStop();
+		if(getCurrentScene() != null)
+			getCurrentScene().onStop();
 	}
 	
 	public void startScene(GameScene scene, final boolean stop_anim, final boolean start_anim) {
