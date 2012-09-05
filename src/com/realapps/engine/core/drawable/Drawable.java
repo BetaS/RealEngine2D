@@ -19,6 +19,7 @@ public abstract class Drawable {
 		protected String 	mID 		= "";
 
 		protected boolean	mShow		= true;
+		protected boolean	mUIMode		= false;
 		
 		protected int 		mX 			= 0;
 		protected int 		mY 			= 0;
@@ -69,6 +70,10 @@ public abstract class Drawable {
 			mShow = false;
 			return this;
 		}
+		public Builder setUIMode() {
+			mUIMode = true;
+			return this;
+		}
 		public abstract Drawable build(String id);
 	}
 	
@@ -98,7 +103,8 @@ public abstract class Drawable {
 		setColorFilter(srcBuilder.mColorFilter);
 		setXferMode(srcBuilder.mXferMode);
 		
-		SceneManager.getCurrentScene().getDrawableManager().add(this);
+		if(!srcBuilder.mUIMode)
+			SceneManager.getCurrentScene().getDrawableManager().add(this);
 	}
 
 	public abstract void release();

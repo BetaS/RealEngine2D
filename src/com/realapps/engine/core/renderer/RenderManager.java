@@ -139,6 +139,25 @@ public class RenderManager extends SurfaceView implements Callback, Runnable {
 		mDrawableManager = manager;
 	}
 	
+	public float getXRatio() {
+		return mWidthRatio;
+	}
+	public float getYRatio() {
+		return mHeightRatio;
+	}
+	public int getCanvasWidth() {
+		return mBaseWidth;
+	}
+	public int getCanvasHeight() {
+		return mBaseHeight;
+	}
+	public int getScreenWidth() {
+		return mScreenWidth;
+	}
+	public int getScreenHeight() {
+		return mScreenHeight;
+	}
+	
 	@Override
 	public void run() {
 		while(!Thread.interrupted()) { // 쓰레드의 무한반복을위해서 while을 돌려줍니다.

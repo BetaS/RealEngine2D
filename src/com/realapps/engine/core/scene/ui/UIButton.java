@@ -1,5 +1,6 @@
 package com.realapps.engine.core.scene.ui;
 
+import android.graphics.Canvas;
 import android.view.MotionEvent;
 
 import com.realapps.engine.core.drawable.ImageDrawable;
@@ -13,15 +14,20 @@ public class UIButton extends UIView {
 	private ImageDrawable down_img = null;
 	
 	public UIButton(GameScene scene, String btn_name, int drawable_off, int drawable_on) {
-		this(scene, btn_name, new ImageDrawable.ImageBuilder().setSource(drawable_off).build("btn_"+btn_name+"_up"), new ImageDrawable.ImageBuilder().setSource(drawable_on).build("btn_"+btn_name+"_down"));
+		this(
+				scene, 
+				btn_name, 
+				(ImageDrawable)new ImageDrawable.ImageBuilder().setSource(drawable_off).setUIMode().build("btn_"+btn_name+"_up"), 
+				(ImageDrawable)new ImageDrawable.ImageBuilder().setSource(drawable_on).setUIMode().build("btn_"+btn_name+"_down")
+		);
 	}
 	public UIButton(GameScene scene, String btn_name, ImageDrawable off, ImageDrawable on) {
 		super(scene, btn_name, off.getWidth(), off.getHeight());
 		
 		up_img = off;
 		down_img = on;
-		
-		setState(BUTTON_DOWN);
+
+		setState(BUTTON_UP);
 	}
 
 	@Override
@@ -34,8 +40,14 @@ public class UIButton extends UIView {
 	}
 	@Override
 	public void release() {
-		mScene.getDrawableManager().remove(up_img.getId());
-		mScene.getDrawableManager().remove(down_img.getId());
+		up_img.release();
+		down_img.release();
+	}
+	
+	@Override
+	public void draw(Canvas canvas) {
+		up_img.draw(canvas);
+		down_img.draw(canvas);
 	}
 	
 	protected void setState(int state) {
@@ -59,5 +71,4 @@ public class UIButton extends UIView {
 			setState(BUTTON_DOWN);
 		}
 	}
-	
 }

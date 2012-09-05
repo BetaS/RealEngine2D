@@ -13,7 +13,9 @@ import com.realapps.engine.core.drawable.ImageDrawable;
 import com.realapps.engine.core.drawable.SpriteDrawable;
 import com.realapps.engine.core.drawable.TextDrawable;
 import com.realapps.engine.core.scene.SceneManager.SceneChanger;
+import com.realapps.engine.core.scene.ui.UIButton;
 import com.realapps.engine.core.scene.ui.UIManager;
+import com.realapps.engine.core.scene.ui.UIView;
 import com.realapps.engine.core.util.physics.PhysicsManager;
 
 public abstract class GameScene {
@@ -25,6 +27,7 @@ public abstract class GameScene {
 	
 	public abstract void onInit(); // 엑티비티 세팅
 	public void onDestroy() {
+		mUIManager.clear();
 		mDrawableManager.clear();
 	}
 	
@@ -35,6 +38,8 @@ public abstract class GameScene {
 	
 	public abstract void onPreRender(); // 연산처리등을 할때
 	public final void onPostRender(Canvas canvas) {
+		mUIManager.render(canvas);
+		
 		if(mSceneChanger != null) {
 			if(!mSceneChanger.render(canvas))
 				mSceneChanger = null;
@@ -64,7 +69,12 @@ public abstract class GameScene {
 	public void onBackPressed() {
 		finish(false);
 	}
-	public abstract void onTouchScreen(MotionEvent event);
+	public void onTouch(MotionEvent event) {
+		mUIManager.onTouch(event);
+	}
+	public void onClick(UIView view) {
+		
+	}
 	public abstract void onTimer(int timer_idx);
 	
 	public void onAnimationFinish(String drawableID, int animID) {}
@@ -126,6 +136,16 @@ public abstract class GameScene {
 	}
 	public Drawable loadSprite(String id, int source, int priority, int x, int y, int sliceX, int sliceY) {
 		return new SpriteDrawable.SpriteBuilder().setSource(source).setSpriteSlice(sliceX, sliceY).setPriority(priority).setPosition(x, y).build(id);
+	}
+	
+	/*
+	 * UI Load
+	 */
+	public UIButton loadButton(String name, int off, int on, int x, int y) {
+		UIButton button = new UIButton(this, name, off, on);
+		button.setPosition(x, y);
+		mUIManager.add(button);
+		return button;
 	}
 	
 	/*

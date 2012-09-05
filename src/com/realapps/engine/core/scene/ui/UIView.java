@@ -1,11 +1,15 @@
 package com.realapps.engine.core.scene.ui;
 
-import com.realapps.engine.core.scene.GameScene;
-
+import android.graphics.Canvas;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import com.realapps.engine.core.renderer.RenderManager;
+import com.realapps.engine.core.scene.GameScene;
+
 public abstract class UIView {
+	public static final int CENTER = Integer.MIN_VALUE;
+	
 	private String mID = "";
 	
 	protected GameScene mScene = null;
@@ -55,6 +59,17 @@ public abstract class UIView {
 	}
 	
 	public void setPosition(int x, int y) {
+		if(x == CENTER) {
+			x = RenderManager.getManager().getCanvasWidth()/2;
+			x -= getWidth()/2;
+		}
+		if(y == CENTER) {
+			y = RenderManager.getManager().getCanvasHeight()/2;
+			y -= getHeight()/2;
+		}
+		
+		Log.e("Position", "X: "+x+", Y: "+y);
+		
 		mX = x; 
 		mY = y;
 
@@ -70,8 +85,6 @@ public abstract class UIView {
 	public void setSize(int width, int height) {
 		mWidth = width;
 		mHeight = height;
-		
-		update();
 	}
 	public int getWidth() {
 		return mWidth;
@@ -91,6 +104,8 @@ public abstract class UIView {
 		
 		if(action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
 			onTouch(action);
+			if(action == MotionEvent.ACTION_UP)
+				mScene.onClick(this);
 		} else {
 			if((mX <= x && x <= mX+mWidth) && (mY <= y && y <= mY+mHeight)) {
 				onTouch(action);
@@ -101,4 +116,5 @@ public abstract class UIView {
 	}
 	
 	protected abstract void onTouch(int action);
+	public abstract void draw(Canvas canvas);
 }

@@ -72,6 +72,8 @@ public class Game extends Activity {
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
+		event.setLocation(event.getX()/RenderManager.getManager().getXRatio(), event.getY()/RenderManager.getManager().getYRatio());
+		
 		SceneManager.getManager().onTouchScreen(event);
 		return super.onTouchEvent(event);
 	}

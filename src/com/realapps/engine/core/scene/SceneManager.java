@@ -57,7 +57,7 @@ public class SceneManager {
 	
 	public void onTouchScreen(MotionEvent event) {
 		if(mSceneStack.size() > 0 && !RenderManager.getManager().isStop()) {
-			getCurrentScene().onTouchScreen(event);
+			getCurrentScene().onTouch(event);
 		}
 	}
 	

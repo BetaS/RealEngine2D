@@ -2,6 +2,9 @@ package com.realapps.engine.core.scene.ui;
 
 import java.util.HashMap;
 
+import android.graphics.Canvas;
+import android.view.MotionEvent;
+
 import com.realapps.engine.core.debug.exception.RuntimeException;
 import com.realapps.engine.core.scene.GameScene;
 
@@ -36,5 +39,18 @@ public class UIManager {
 			mUIMap.get(key).release();
 		}
 		mUIMap.clear();
+	}
+	
+	public void onTouch(MotionEvent event) {
+		for(String key: mUIMap.keySet()) {
+			mUIMap.get(key).touch(event);
+		}
+	}
+	
+	public void render(Canvas canvas) {
+		for(String key: mUIMap.keySet()) {
+			UIView view = mUIMap.get(key);
+			view.draw(canvas);
+		}
 	}
 }
