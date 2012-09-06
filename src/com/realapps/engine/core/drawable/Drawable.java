@@ -139,6 +139,7 @@ public abstract class Drawable {
 	private void updateMatrix() {
 		mMatrix = new Matrix();
 		mMatrix.postTranslate(mOffsetX, mOffsetY);
+		mMatrix.setScale(mScaleX, mScaleY);
 		mMatrix.postRotate(mRotate);
 	}
 	
@@ -184,6 +185,27 @@ public abstract class Drawable {
 	}
 	public int getHeight() {
 		return mDrawableHeight;
+	}
+	
+	/*
+	 * Drawable Scale
+	 */
+	protected float mScaleX = 1.0f;
+	protected float mScaleY = 1.0f;
+	public void setScale(float scale) {
+		setScale(scale, scale);
+	}
+	public void setScale(float scaleX, float scaleY) {
+		mScaleX = scaleX;
+		mScaleY = scaleY;
+		
+		updateMatrix();
+	}
+	public float getScaleX() {
+		return mScaleX;
+	}
+	public float getScaleY() {
+		return mScaleY;
 	}
 	
 	/*
