@@ -72,31 +72,29 @@ public abstract class GameScene {
 	public void onTouch(MotionEvent event) {
 		mUIManager.onTouch(event);
 	}
-	public void onClick(UIView view) {
-		
-	}
-	public abstract void onTimer(int timer_idx);
+	public void onClick(UIView view) {}
+	public void onTimer(int timer_idx) {}
 	
 	public void onAnimationFinish(String drawableID, int animID) {}
 	
 	public void startScene(GameScene scene) {
 		startScene(scene, true, true);
 	}
-	public void startScene(GameScene scene, boolean anim, boolean new_anim) {
+	public final void startScene(GameScene scene, boolean anim, boolean new_anim) {
 		SceneManager.getManager().startScene(scene, anim, new_anim);
 	}
 	
-	public void replaceScene(GameScene scene) {
+	public final void replaceScene(GameScene scene) {
 		replaceScene(scene, true, true);
 	}
 	public void replaceScene(GameScene scene, boolean anim, boolean new_anim) {
 		SceneManager.getManager().replaceScene(scene, anim, new_anim);
 	}
 	
-	public void finish(boolean anim) {
+	public final void finish(boolean anim) {
 		SceneManager.getManager().finishScene(anim);
 	}
-	public void setSceneChanger(SceneChanger changer) {
+	protected final void setSceneChanger(SceneChanger changer) {
 		mSceneChanger = changer;
 	}
 	
@@ -151,20 +149,20 @@ public abstract class GameScene {
 	/*
 	 * Resource Manage
 	 */
-	public Drawable findDrawableById(String id) {
+	public final Drawable findDrawableById(String id) {
 		return mDrawableManager.get(id);
 	}
 	
 	/*
 	 * Manager
 	 */
-	public PhysicsManager getPhysicsManager() {
+	public final PhysicsManager getPhysicsManager() {
 		return mPhysicsManager;
 	}
-	public DrawableManager getDrawableManager() {
+	public final DrawableManager getDrawableManager() {
 		return mDrawableManager;
 	}
-	public UIManager getUiManager() {
+	public final UIManager getUiManager() {
 		return mUIManager;
 	}
 	
@@ -184,7 +182,7 @@ public abstract class GameScene {
 		}
 	}
 	private ArrayList<Timer> mTimerList = new ArrayList<Timer>();
-	public void setTimer(int timer_idx, int time, int repeat) {
+	public final void setTimer(int timer_idx, int time, int repeat) {
 		mTimerList.add(new Timer(timer_idx, time, repeat));
 	}
 }
