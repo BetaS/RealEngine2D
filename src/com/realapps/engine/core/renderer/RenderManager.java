@@ -202,8 +202,12 @@ public class RenderManager extends SurfaceView implements Callback, Runnable {
 						scene.getPhysicsManager().checkPhysics();
 					}
 					
-					for(Drawable drawable: renderingQueue) {
-						drawable.draw(canvas);
+					try {
+						for(Drawable drawable: renderingQueue) {
+							drawable.draw(canvas);
+						}
+					} catch(NullPointerException e) {
+						e.printStackTrace();
 					}
 					
 					scene.onPostRender(canvas);

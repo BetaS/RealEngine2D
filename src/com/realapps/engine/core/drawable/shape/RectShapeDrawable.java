@@ -5,7 +5,7 @@ import android.graphics.Rect;
 import android.graphics.Paint.Style;
 
 public class RectShapeDrawable extends ShapeDrawable {
-	public static int MODE_FILL = -1;
+	public static int MODE_FILL = 0;
 	public static int MODE_LINE = 1;
 	
 	public static class RectShapeBuilder extends ShapeBuilder {
@@ -33,11 +33,18 @@ public class RectShapeDrawable extends ShapeDrawable {
 	private RectShapeDrawable(RectShapeBuilder srcBuilder) {
 		super(srcBuilder);
 		vertices = srcBuilder.vertices;
-		mode = srcBuilder.mode;
+		setMode(srcBuilder.mode);
+		
+		setSize(vertices.get(1).getX()-vertices.get(0).getX(), vertices.get(1).getY()-vertices.get(0).getY());
 	}
 	
 	public void setMode(int mode) {
 		this.mode = mode;
+		if(mode == MODE_LINE) {
+			mPaint.setStyle(Style.STROKE);
+		} else {
+			mPaint.setStyle(Style.FILL);
+		}
 	}
 	public int getMode() {
 		return mode;
@@ -45,11 +52,6 @@ public class RectShapeDrawable extends ShapeDrawable {
 	
 	@Override
 	public void draw(Canvas canvas) {
-		if(mode == MODE_LINE) {
-			mPaint.setStyle(Style.STROKE);
-		} else {
-			mPaint.setStyle(Style.FILL);
-		}
 		canvas.drawRect(vertices.get(0).getX(), vertices.get(0).getY(), vertices.get(1).getX(), vertices.get(1).getY(), mPaint);
 	}
 }

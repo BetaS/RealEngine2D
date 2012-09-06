@@ -50,7 +50,7 @@ public class UIButton extends UIView {
 		down_img.draw(canvas);
 	}
 	
-	protected void setState(int state) {
+	public void setState(int state) {
 		if(!isShow()) {	
 			up_img.hide();
 			down_img.hide();
