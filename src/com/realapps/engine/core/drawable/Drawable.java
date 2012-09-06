@@ -136,7 +136,7 @@ public abstract class Drawable {
 	 * Drawable Matrix
 	 */
 	private Matrix mMatrix = new Matrix();
-	private void updateMatrix() {
+	protected void updateMatrix() {
 		mMatrix = new Matrix();
 		mMatrix.postTranslate(mOffsetX, mOffsetY);
 		mMatrix.setScale(mScaleX, mScaleY);
@@ -231,6 +231,12 @@ public abstract class Drawable {
 		mOffsetY = -y;
 		
 		updateMatrix();
+	}
+	public void setOffsetX(int x) {
+		setOffset(x, mOffsetY);
+	}
+	public void setOffsetY(int y) {
+		setOffset(mOffsetX, y);
 	}
 	public void setOffsetToCenter() {
 		setOffset(getWidth()/2, getHeight()/2);

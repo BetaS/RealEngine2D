@@ -1,25 +1,20 @@
-package com.realapps.engine.core.drawable;
+package com.realapps.engine.core.drawable.shape;
 
 import java.util.ArrayList;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+import com.realapps.engine.core.drawable.Drawable;
 import com.realapps.engine.core.util.display.Point;
 
 public class ShapeDrawable extends Drawable {
 	public static class ShapeBuilder extends Builder {
 		protected ArrayList<Point> vertices = new ArrayList<Point>();
-		protected int color = 0x000000;
 		protected int border = 0;
 		
 		public ShapeBuilder addVertex(int x, int y) {
 			vertices.add(new Point(x, y));
-			return this;
-		}
-		
-		public ShapeBuilder setColor(int color) {
-			this.color = color;
 			return this;
 		}
 		
@@ -34,11 +29,11 @@ public class ShapeDrawable extends Drawable {
 		}
 	}
 	
-	private ArrayList<Point> vertices = new ArrayList<Point>();
-	private int border = 0;
-	private int color = 0x000000;
+	protected ArrayList<Point> vertices = new ArrayList<Point>();
+	protected int border = 0;
+	protected int color = 0x000000;
 	
-	private ShapeDrawable(ShapeBuilder srcBuilder) {
+	protected ShapeDrawable(ShapeBuilder srcBuilder) {
 		super(srcBuilder);
 		vertices = srcBuilder.vertices;
 	}
