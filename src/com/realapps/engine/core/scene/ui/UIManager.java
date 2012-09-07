@@ -47,7 +47,7 @@ public class UIManager {
 		}
 	}
 	
-	public void render(Canvas canvas) {
+	public synchronized void render(Canvas canvas) {
 		for(String key: mUIMap.keySet()) {
 			UIView view = mUIMap.get(key);
 			view.draw(canvas);

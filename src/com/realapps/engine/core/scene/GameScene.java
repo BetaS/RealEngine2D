@@ -15,6 +15,7 @@ import com.realapps.engine.core.drawable.TextDrawable;
 import com.realapps.engine.core.scene.SceneManager.SceneChanger;
 import com.realapps.engine.core.scene.ui.UIButton;
 import com.realapps.engine.core.scene.ui.UIManager;
+import com.realapps.engine.core.scene.ui.UISwitchButton;
 import com.realapps.engine.core.scene.ui.UIView;
 import com.realapps.engine.core.util.physics.PhysicsManager;
 
@@ -141,6 +142,12 @@ public abstract class GameScene {
 	 */
 	public UIButton loadButton(String name, int off, int on, int x, int y) {
 		UIButton button = new UIButton(this, name, off, on);
+		button.setPosition(x, y);
+		mUIManager.add(button);
+		return button;
+	}
+	public UISwitchButton loadSwitchButton(String name, int off, int on, int x, int y) {
+		UISwitchButton button = new UISwitchButton(this, name, off, on);
 		button.setPosition(x, y);
 		mUIManager.add(button);
 		return button;

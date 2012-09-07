@@ -29,8 +29,8 @@ public class RectShapeDrawable extends ShapeDrawable {
 		}
 	}
 	
-	private int mode = MODE_FILL;
-	private RectShapeDrawable(RectShapeBuilder srcBuilder) {
+	protected int mode = MODE_FILL;
+	protected RectShapeDrawable(RectShapeBuilder srcBuilder) {
 		super(srcBuilder);
 		vertices = srcBuilder.vertices;
 		setMode(srcBuilder.mode);
