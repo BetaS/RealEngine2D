@@ -5,7 +5,7 @@ public class ColorUtil {
 		return color/0x01000000;
 	}
 	public static int getR(int color) {
-		return color/0x00010000;
+		return color/0x00010000%0x00000100;
 	}
 	public static int getG(int color) {
 		return color/0x00000100%0x00000100;

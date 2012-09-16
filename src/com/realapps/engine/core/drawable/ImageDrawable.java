@@ -50,7 +50,6 @@ public class ImageDrawable extends Drawable {
 		// Set Size
 		setSize(mBitmap.getWidth(), mBitmap.getHeight());
 	}
-	
 	public Rect getBounds() {
 		return mRenderRect;
 	}
@@ -68,6 +67,10 @@ public class ImageDrawable extends Drawable {
 		super.setPosition(x, y);
 
 		mRenderRect = new Rect(getX(), getY(), getX()+getWidth(), getY()+getHeight());
+	}
+	
+	public void setRenderWidth(int width) {
+		mImageRect.right = width;
 	}
 	
 	protected void update() { }

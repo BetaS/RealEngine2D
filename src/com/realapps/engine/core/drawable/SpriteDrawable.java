@@ -40,7 +40,7 @@ public class SpriteDrawable extends ImageDrawable {
 		}
 	}
 	
-	private boolean mAnimationPlay = false;
+	private boolean mAnimationPlay = true;
 	
 	private int mAnimationSliceX = 0;
 	private int mAnimationSliceY = 0;
@@ -74,8 +74,18 @@ public class SpriteDrawable extends ImageDrawable {
 		mAnimationSpeedCnt = mAnimationSpeed;
 	}
 	
+	public void play() {
+		mAnimationPlay = true;
+	}
+	public void stop() {
+		mAnimationPlay = false;
+	}
+	public boolean isPlay() {
+		return mAnimationPlay;
+	}
+	
 	protected void update() {
-		if(mAnimationPlay) {
+		if(mShow && mAnimationPlay) {
 			if(mAnimationSpeedCnt <= 0) {
 	 			if((++mAnimationIndex) > mAnimationEnd) {
 					mAnimationIndex = mAnimationStart;
