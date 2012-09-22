@@ -41,7 +41,6 @@ public abstract class UIView {
 
 	public void setPriority(int priority) {
 		mPriority = priority;
-		
 		update();
 	}
 	public int getPriority() {
@@ -50,9 +49,11 @@ public abstract class UIView {
 	
 	public void show() {
 		mShow = true;
+		update();
 	}
 	public void hide() {
 		mShow = false;
+		update();
 	}
 	public boolean isShow() {
 		return mShow;

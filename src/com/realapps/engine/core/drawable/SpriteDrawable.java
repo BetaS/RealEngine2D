@@ -74,6 +74,10 @@ public class SpriteDrawable extends ImageDrawable {
 		mAnimationSpeedCnt = mAnimationSpeed;
 	}
 	
+	public int getAnimationIndex() {
+		return mAnimationIndex;
+	}
+	
 	public void play() {
 		mAnimationPlay = true;
 	}

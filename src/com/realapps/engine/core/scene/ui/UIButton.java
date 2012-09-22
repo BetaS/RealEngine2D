@@ -13,6 +13,8 @@ public class UIButton extends UIView {
 	private ImageDrawable up_img = null;
 	private ImageDrawable down_img = null;
 	
+	protected int mState = BUTTON_UP;
+	
 	public UIButton(GameScene scene, String btn_name, int drawable_off, int drawable_on) {
 		this(
 				scene, 
@@ -37,6 +39,17 @@ public class UIButton extends UIView {
 		
 		down_img.setPosition(getX(), getY());
 		down_img.setPriority(getPriority());
+		
+		if(!isShow()) {	
+			up_img.hide();
+			down_img.hide();
+		} else if(mState == BUTTON_DOWN) {
+			up_img.hide();
+			down_img.show();
+		} else if(mState == BUTTON_UP) {
+			up_img.show();
+			down_img.hide();
+		}
 	}
 	@Override
 	public void release() {
@@ -51,16 +64,12 @@ public class UIButton extends UIView {
 	}
 	
 	public void setState(int state) {
-		if(!isShow()) {	
-			up_img.hide();
-			down_img.hide();
-		} else if(state == BUTTON_DOWN) {
-			up_img.hide();
-			down_img.show();
-		} else if(state == BUTTON_UP) {
-			up_img.show();
-			down_img.hide();
-		}
+		mState = state;
+		update();
+	}
+	
+	public int getState() {
+		return mState;
 	}
 	
 	@Override
