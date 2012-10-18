@@ -3,22 +3,28 @@ package com.realapps.engine.core.util.hardware;
 import android.content.Context;
 import android.os.Vibrator;
 
-public class HardwareManager {
+public class SystemManager {
 	private Vibrator mVibratorService = null;
+	private String mFilePath = "";
 	
-	private HardwareManager() {
+	private SystemManager() {
 	}
 	
-	private static HardwareManager mInstance = new HardwareManager();
-	public static HardwareManager getInstance() {
+	private static SystemManager mInstance = new SystemManager();
+	public static SystemManager getInstance() {
 		return mInstance;
 	}
 	
 	public void init(Context context) {
 		mVibratorService = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
+		mFilePath = context.getFilesDir().getAbsolutePath();
 	}
 	
 	public void vibrate(int time) {
 		mVibratorService.vibrate(time);
+	}
+	
+	public String getFilePath() {
+		return mFilePath;
 	}
 }

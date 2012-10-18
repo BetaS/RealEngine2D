@@ -7,7 +7,7 @@ import android.view.MotionEvent;
 import com.realapps.engine.core.renderer.RenderManager;
 import com.realapps.engine.core.scene.GameScene;
 import com.realapps.engine.core.scene.SceneManager;
-import com.realapps.engine.core.util.hardware.HardwareManager;
+import com.realapps.engine.core.util.hardware.SystemManager;
 
 public class Game extends Activity {
 	private static Activity mApplicationContext = null;
@@ -38,7 +38,7 @@ public class Game extends Activity {
 
 		mApplicationContext = this;
 		
-		HardwareManager.getInstance().init(this);
+		SystemManager.getInstance().init(this);
 		
 		RenderManager renderer = RenderManager.getManager();
 		if(debug) renderer.showFPS();

@@ -66,6 +66,7 @@ public class SpriteDrawable extends ImageDrawable {
 	}
 	
 	public void setAnimationRange(int start_idx, int end_idx) {
+		mAnimationIndex = start_idx;
 		mAnimationStart = start_idx;
 		mAnimationEnd	= end_idx;
 	}
