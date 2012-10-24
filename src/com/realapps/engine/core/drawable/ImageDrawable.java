@@ -55,22 +55,33 @@ public class ImageDrawable extends Drawable {
 	}
 	
 	@Override
+	public void setPadding(int left, int top, int right, int bottom) {
+		super.setPadding(left, top, right, bottom);
+
+		updateRect();
+	}
+	
+	@Override
 	protected void setSize(int width, int height) {
 		super.setSize(width, height);
-	
-		mImageRect = new Rect(0, 0, getWidth(), getHeight());
-		mRenderRect = new Rect(getX(), getY(), getX()+getWidth(), getY()+getHeight());
+		
+		updateRect();
 	}
 	
 	@Override
 	public void setPosition(int x, int y) {
 		super.setPosition(x, y);
-
-		mRenderRect = new Rect(getX(), getY(), getX()+getWidth(), getY()+getHeight());
+		
+		updateRect();
 	}
 	
 	public void setRenderWidth(int width) {
 		mImageRect.right = width;
+	}
+	
+	protected void updateRect() {
+		mImageRect = new Rect(getPadding().left, getPadding().top, getWidth()-getPadding().right, getHeight()-getPadding().bottom);
+		mRenderRect = new Rect(getX()+getPadding().left, getY()+getPadding().top, getX()+getWidth()-getPadding().right, getY()+getHeight()-getPadding().bottom);
 	}
 	
 	protected void update() { }

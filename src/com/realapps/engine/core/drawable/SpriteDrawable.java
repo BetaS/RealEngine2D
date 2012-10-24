@@ -106,7 +106,10 @@ public class SpriteDrawable extends ImageDrawable {
 			int X = mAnimationIndex%mAnimationSliceX;
 			int Y = mAnimationIndex/mAnimationSliceX;
 		
-			canvas.drawBitmap(mBitmap, new Rect(X*getWidth(), Y*getHeight(), (X+1)*getWidth(), (Y+1)*getHeight()), new Rect(getX(), getY(), getX()+getWidth(), getY()+getHeight()), mPaint);
+			canvas.drawBitmap(mBitmap, 
+					new Rect(X*getWidth()+getPadding().left, Y*getHeight()+getPadding().top, (X+1)*getWidth()-getPadding().right, (Y+1)*getHeight()-getPadding().bottom), 
+					new Rect(getX()+getPadding().left, getY()+getPadding().top, getX()+getWidth()-getPadding().right, getY()+getHeight()-getPadding().bottom), 
+					mPaint);
 		}
 	}
 }

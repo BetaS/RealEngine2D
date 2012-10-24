@@ -7,6 +7,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 
 import com.realapps.engine.core.animation.Animator;
 import com.realapps.engine.core.scene.SceneManager;
@@ -247,6 +248,18 @@ public abstract class Drawable {
 	}
 	public int getOffsetY() {
 		return mOffsetY;
+	}
+	
+	/*
+	 * Drawable Padding
+	 */
+	protected Rect mPadding = new Rect(0, 0, 0, 0);
+	
+	public void setPadding(int left, int top, int right, int bottom) {
+		mPadding = new Rect(left, top, right, bottom);
+	}
+	public Rect getPadding() {
+		return mPadding;
 	}
 	
 	/*
